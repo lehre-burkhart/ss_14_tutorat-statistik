@@ -1,0 +1,5 @@
+# Ignore R-Project files
+*.Rproj
+
+# Ignore pdf's
+*.pdf
