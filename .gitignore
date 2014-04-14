@@ -4,3 +4,7 @@
 # Ignore pdf's and txt's
 *.pdf
 *.txt
+
+
+# Ignore Rproj.user directory
+/Rproj.user/*
