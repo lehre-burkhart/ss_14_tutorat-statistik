@@ -1,5 +1,6 @@
 # Ignore R-Project files
 *.Rproj
 
-# Ignore pdf's
+# Ignore pdf's and txt's
 *.pdf
+*.txt
