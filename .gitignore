@@ -8,3 +8,4 @@
 
 # Ignore Rproj.user directory
 /Rproj.user/*
+.Rproj.user

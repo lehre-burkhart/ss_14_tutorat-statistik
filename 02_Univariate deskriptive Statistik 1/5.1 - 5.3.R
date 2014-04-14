@@ -24,13 +24,13 @@ schueler <- as.data.frame(c(rep(1,16), rep(2,145), rep(3,282), rep(4,139), rep(5
 # Der einzigen Spalte einen Namen geben
 colnames(schueler) <- c("Noten")
 
-# Histogram der absoluten Häufigkeiten
-histNotenAbs <- ggplot(schueler, aes(x=Noten))
-histNotenAbs + geom_histogram(binwidth = 1, colour="black", fill="grey") + labs(title="Histogramm Schüler absolut", x="Note", y="Häufigkeit") + theme_bw() + theme(plot.title = element_text(size = rel(2)))
+# Barchart der absoluten Häufigkeiten
+barNotenAbs <- ggplot(schueler, aes(factor(Noten))) + geom_bar(fill="grey", colour="black") + labs(title="Noten Schüler absolute Häufigkeiten", x="Noten", y="Häufigkeiten") + theme_bw() + theme(plot.title=element_text(size=18))
+barNotenAbs
 
-# Histogramm der relativen Häufigkeiten
-histNotenRel <- ggplot(schueler, aes(x=Noten))
-histNotenRel + geom_histogram(binwidth = 1, aes(y = (..count..)/sum(..count..)), colour="black", fill="grey") + labs(title="Histogramm Schüler relativ", x="Note", y="Häufigkeit") + theme_bw() + theme(plot.title = element_text(size = rel(2)))
+# Barchart der relativen Häufigkeiten
+barNotenAbs <- ggplot(schueler, aes(factor(Noten))) + geom_bar(aes(y = (..count..)/sum(..count..)), fill="grey", colour="black") + labs(title="Noten Schüler relative Häufigkeiten", x="Noten", y="Häufigkeiten") + theme_bw() + theme(plot.title=element_text(size=18))
+barNotenAbs
 
 # Häufigkeiten absolut und relativ
 prop.table(table(schueler$Noten))*100
