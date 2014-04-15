@@ -114,7 +114,7 @@ var(movies$length) # Varianz der Länge aller Filme
 
 describe(movies$rating) # Zeigt die deskriptive Statistik einer Variable des Dataframes
 
-describe(movies[,c(1:6)]) # Zeigt die deskriptive Statistik der Variablen 1 bis 6 des Dataframes
+describe(movies[,c(4:5)]) # Zeigt die deskriptive Statistik der Variablen 4 bis 5 des Dataframes
 
 describeBy(movies$rating, movies$Action) # Zeigt die deskriptive Statistik abhängig einer Gruppe
 
