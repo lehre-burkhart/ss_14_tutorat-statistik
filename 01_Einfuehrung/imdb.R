@@ -68,6 +68,12 @@ which.min(movies$year) # Findet die Position des geringsten Wertes in der Variab
 
 # TODO Wie hoch ist das höchste Budget?
 
+sum(movies$votes) # Wie viele Stimmen wurden bisher für alle Filme abgegeben
+
+# TODO Wie viele Tage dauern alle Filme, die im Dataframe sind? Speichere das Ergebnis in einer Variable mit dem Namen tage
+
+# TODo Wie viele Jahre dauert es, alle Filme des Dataframes zu schauen? Benutze die Variable tage, um zu der Antwort zu kommen.
+
 
 # ****************** Einen Dataframe teilen *************************************
 comedies <- subset(movies, Comedy == 1) # Erzeugt einen neuen Dataframe nur mit Comedyfilmen
@@ -129,7 +135,7 @@ boxplot(movies$rating) # Erstellt ein Boxplot der Ratings der Filme
 
 # TODO Erstelle einen Boxplot der Länge der Filme
 
-# Die Filme ein paar Filme, die sehr lang sind. Dies erzeugt einen Boxplot, der schwer zu interpretieren ist
+# Es gibt ein paar Filme, die sehr lang sind. Dies erzeugt einen Boxplot, der schwer zu interpretieren ist
 
 # TODO Erzeuge einen neuen Dataframe, in dem die Filme maximal 200 Minuten lang sind
 
