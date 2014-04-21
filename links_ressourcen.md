@@ -1,4 +1,4 @@
-# Links und weitere Resourcen
+# Über die Vorlesung hinaus | Links und Ressourcen
 
 ## R
 
@@ -22,3 +22,9 @@
 * https://www.udacity.com/course/st095
 * https://www.udacity.com/course/ud651
 * https://www.udacity.com/course/st101
+
+### Discovering Statistics Using R (Andy Field)
+* http://www.sagepub.com/dsur/study/default.htm (Companion site)
+
+### Datensätze
+* https://pslcdatashop.web.cmu.edu/index.jsp
