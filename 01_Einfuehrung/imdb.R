@@ -46,7 +46,7 @@ table(movies$Comedy) # Wie viele Comedyfilme sind im Dataframe?
 
 # TODO Bestimme den prozentualen Anteil der Actionfilme im Dataframe
 
-# TODO Gibt es mehr Romanzen als Actionfilme in der Database? Wenn das zu einfach ist, versuche die Antwort in einer einzigen Zeile zu finden. Tipp: table(movies$Comedy)[2] liefert die Anzahl der Comedyfilme
+# TODO Gibt es mehr Romanzen als Actionfilme in der Database? Wenn das zu einfach ist, versuche die Antwort in einer einzigen Zeile zu finden. Tipp: table(movies$Comedy)[2] liefert die Anzahl der Comedyfilmet
 
 table(movies$Comedy, movies$Animation) # Es lassen sich auch zwei Variablen in einer Tabelle betrachten
 
@@ -109,8 +109,6 @@ median(movies$year) # Median der Veröffentlichungen der Filme
 sd(movies$budget) # Standardabweichung des Budgets aller Filme
 
 var(movies$length) # Varianz der Länge aller Filme
-
-# TODO ist die Standardabweichung der Länge der Filme größer als des Budgets der Filme? Löse in einer Zeile und benutze das > Symbol. Achte darauf, dass es NAs geben könnte (na.rm=T)!
 
 describe(movies$rating) # Zeigt die deskriptive Statistik einer Variable des Dataframes
 
