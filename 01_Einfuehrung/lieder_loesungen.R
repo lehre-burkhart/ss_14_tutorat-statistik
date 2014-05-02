@@ -3,7 +3,7 @@
 # R anhand der Billboard 100 aus den Jahren 1990 bis 2010
 #
 # Albert-Ludwigs-UniversitÃ¤t Freiburg
-# Institut für Erziehungswissenschaft
+# Institut f?r Erziehungswissenschaft
 # SS 2014
 # Studienfach: Bildungswissenschaft und Bildungsmanagement (B.A.)
 # Seminar: Statistik I
@@ -32,28 +32,29 @@
 # TODO Lade die Datei lieder.csv von der Seite https://github.com/ch-bu/tutorat_statistik/tree/master/01_Einfuehrung herunter.
 
 # TODO Setze dein Working-Directory auf das Verzeichnis mit der Datei lieder.csv
-setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/01_Einfuehrung")
+#setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/01_Einfuehrung")
+setwd("~/Dropbox/Christian_HiWi/_Statistik I_Tutorat/01_Einfuehrung")
 
-# TODO Lade die Datei lieder.csv in R ein und speichere sie in der Variable lieder (TiPP: read.csv; für Hilfe, tippe ?read.csv in die Console)
+# TODO Lade die Datei lieder.csv in R ein und speichere sie in der Variable lieder (TiPP: read.csv; f?r Hilfe, tippe ?read.csv in die Console)
 # Achte darauf, dass die CSV-Datei einen header hat.
 lieder <- read.csv("lieder.csv", header=T)
 
 
 # TODO Wie viele Lieder sind im Datensatz
 str(lieder) # structure of the dataset
-nrow(lieder) # geht auch über die Anzahl der Reihen
+nrow(lieder) # geht auch ?ber die Anzahl der Reihen
 
 table(lieder$year) # Wir sehen die Verteilung der Lieder, in den unterschiedlichen Jahren 
-prop.table(table(lieder$year)) # Ebenso können wir uns die Verteilung in Prozent ansehen
+prop.table(table(lieder$year)) # Ebenso k?nnen wir uns die Verteilung in Prozent ansehen
 sum(prop.table(table(lieder$year))) # In der Summe sollte sie 1 ergeben
 
 # TODO In welchem Jahr gab es die meisten Lieder in den Billboards?
 which.max(table(lieder$year)) # Hier wird das Jahr (2007) und die Position in dem Vector wiedergegeben (18)
 sort(table(lieder$year)) # Alternativ kann man die Tabelle auch sortieren
 
-table(lieder$year == 2007, lieder$Top10) # Zählen wir die zweite Reihe zusammen (564 + 58) ergeben sich die 622 Lieder aus dem Jahre 2007
+table(lieder$year == 2007, lieder$Top10) # Z?hlen wir die zweite Reihe zusammen (564 + 58) ergeben sich die 622 Lieder aus dem Jahre 2007
 # FALSE umfasst die Lieder, welche nicht 2007 in den Billboards waren. 
-# Aus der Tabelle können wir herauslesen, dass es 2007 58 Lieder in den Top 10 der Billboards gab. 
+# Aus der Tabelle k?nnen wir herauslesen, dass es 2007 58 Lieder in den Top 10 der Billboards gab. 
 
 # TODO Wie viele Top 10 Lieder gab es im Jahr 2010 in den Billboards
 table(lieder$year == 1992, lieder$Top10)
@@ -62,28 +63,28 @@ table(lieder$year == 1992, lieder$Top10)
 table(lieder$year, lieder$Top10) # 1996 mit 34 Liedern
 
 # Nenne ein Lied aus den TOP 10 aus dem Jahr mit den wenigsten Liedern? Schwierige Frage!
-wenigTop10 <- subset(lieder, lieder$year == 1996 & lieder$Top10 == 1) # Zunächst wird ein Teil des Dataframes gepeichert
-wenigTop10$songtitle <- factor(wenigTop10$songtitle) # Da die Variable ein Faktor ist, werden alle Songtitles aus dem vorherigen Dataframe übernommen. Wir benötigen aber nur diejenigen 34, die es in diesem Jahr gab
+wenigTop10 <- subset(lieder, lieder$year == 1996 & lieder$Top10 == 1) # Zun?chst wird ein Teil des Dataframes gepeichert
+wenigTop10$songtitle <- factor(wenigTop10$songtitle) # Da die Variable ein Faktor ist, werden alle Songtitles aus dem vorherigen Dataframe ?bernommen. Wir ben?tigen aber nur diejenigen 34, die es in diesem Jahr gab
 wenigTop10$songtitle # Zeigt alle Songtitles aus diesem Jahr, die in den Top10 waren
 # e.g. Smells Like Teen Spirit
 
 # TODO Wie viele Lieder von Michael Jackson waren in den Top10
-MichaelJackson <- subset(lieder, artistname == "Michael Jackson")
+MichaelJackson <- subset(lieder, artistname == "Michael Jackson" & Top10 == 1)
 nrow(MichaelJackson)
 
 
-# Eine weitere Variable ist die Lautstärke des Liedes (loudness)
+# Eine weitere Variable ist die Lautst?rke des Liedes (loudness)
 # TODO Wie laut ist das lauteste Lied im ganzen Dataframe?
 max(lieder$loudness)
 
-# Wie heißt das lauteste Lied?
-lieder[which.max(lieder$loudness), c("year", "artistname", "songtitle", "loudness")] # Vor dem Komma wird die Reihe angegeben, nach dem Komma werden die Spalten ausgewählt
+# Wie hei?t das lauteste Lied?
+lieder[which.max(lieder$loudness), c("year", "artistname", "songtitle", "loudness")] # Vor dem Komma wird die Reihe angegeben, nach dem Komma werden die Spalten ausgew?hlt
 
-# Wie heißt das leiseste Lied?
+# Wie hei?t das leiseste Lied?
 lieder[which.min(lieder$loudness), c("year", "artistname", "songtitle", "loudness")]
 
 tapply(lieder$loudness, lieder$year, mean) # Hier sehen wir, in welchem Jahr die Lieder im Mittel am leisesten und lautesten waren. 
-# Achtet darauf, dass Dezibel auch negativ sein können
+# Achtet darauf, dass Dezibel auch negativ sein k?nnen
 
 # Welches Lied war im Jahr 2008 am lautesten?
 loud2008 <- subset(lieder, year == 2008)
@@ -95,11 +96,11 @@ hist(lieder$tempo) # Hier sehen wir die Verteilung der Geschwindigkeit aller Lie
 # TODO Finde den Mittelwert des Tempos aller Lieder?
 mean(lieder$tempo)
 
-# TODO Welches Lied hat das höchste Tempo aller Lieder
+# TODO Welches Lied hat das h?chste Tempo aller Lieder
 lieder[which.max(lieder$tempo), c("year", "songtitle", "artistname", "tempo")]
  
 
-# Mit der Funktion quantile() können wir bestimmen, wie viel Prozent der Daten unter oder über einem bestimmten Wert liegen
+# Mit der Funktion quantile() k?nnen wir bestimmen, wie viel Prozent der Daten unter oder ?ber einem bestimmten Wert liegen
 quantile(lieder$tempo, c(.05))
 
 # TODO Zwischen welchen Werten liegen die oberen 5% der Geschwindigkeiten aller Lieder?
@@ -112,10 +113,10 @@ quantile(lieder$tempo, c(.50))
 
 plot(lieder$tempo, lieder$loudness)
 
-tapply(lieder$tempo, lieder$year >= 2000, mean) # Hierduch können wir sehen, ob im Mittel das Tempo der Lieder seit 2000 angestiegen ist
+tapply(lieder$tempo, lieder$year >= 2000, mean) # Hierduch k?nnen wir sehen, ob im Mittel das Tempo der Lieder seit 2000 angestiegen ist
 
 
-tail(sort(tapply(lieder$Top10, lieder$artistname, sum))) # Hier seht ihr, dass man mit R viele verschiedene Funktionen miteinander verschachteln kann. Der Output beschreibt diejenigen Künstler, mit den meisten Top10 Hits zwischen 1990 und 2010. 
+tail(sort(tapply(lieder$Top10, lieder$artistname, sum))) # Hier seht ihr, dass man mit R viele verschiedene Funktionen miteinander verschachteln kann. Der Output beschreibt diejenigen K?nstler, mit den meisten Top10 Hits zwischen 1990 und 2010. 
 
 # TODO Finde alle 20 Lieder, mit denen Mariah Carey in den Top10 war
 mc <- subset(lieder, artistname == "Mariah Carey" & Top10 == 1)
