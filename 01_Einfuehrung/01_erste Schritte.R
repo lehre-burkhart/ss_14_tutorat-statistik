@@ -47,7 +47,7 @@
 
 # R kann rechnen :)
 3 + 3 # Addition
-5 -1 # Substraktion
+5 - 1 # Substraktion
 3 * 2 # Multiplikation
 6 / 3 # Division
 
