@@ -59,7 +59,8 @@ mean(iqMitAusreiser)
 names(sort(-table(iq)))[1] # Find Mode in iq-data
 which.max(table(iq)) # Find Mode in iq-data
 
-# Quantile
+# ************************* 6.1 Quantile ********************
+
 x <- c(4, 5, 6, 7, 7, 7, 8, 8, 9, 10) # Beliebiger Vector
 quantile(x, c(.25, .50)) # 25. und 50. (Median) Quantil anzeigen
 
