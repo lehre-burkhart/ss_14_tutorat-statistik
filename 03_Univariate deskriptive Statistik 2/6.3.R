@@ -15,17 +15,15 @@
 # Packete laden
 library(ggplot2)
 library(gridExtra)
-library(reshape2)
 
-
-# ************************* 6.3 Statistiken für die Streuung von Variablen ********************
+# ************************* 6.3 Statistiken f?r die Streuung von Variablen ********************
 
 # Dataframe aus beiden Verteilungen erstellen
 verteilungen <- data.frame(breit = rnorm(5000, mean = 100, sd = 15), schmal = rnorm(5000, mean = 100, sd = 5))
 
-histBreit <- ggplot(verteilungen, aes(breit)) + geom_histogram(binwidth = 5, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung breit", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18)) # Histogram einer breiten Verteilung mit 5000 Datenpunkten
+histBreit <- ggplot(verteilungen, aes(breit)) + geom_histogram(binwidth = 5, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung breit", x = "Testergebnis", y = "absolute H?ufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18)) # Histogram einer breiten Verteilung mit 5000 Datenpunkten
 
-histSchmal <- ggplot(verteilungen, aes(schmal)) + geom_histogram(binwidth = 3, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung schmal", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18))  # Histogram einer schmalen Verteilung mit 5000 Datenpunkten
+histSchmal <- ggplot(verteilungen, aes(schmal)) + geom_histogram(binwidth = 3, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung schmal", x = "Testergebnis", y = "absolute H?ufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18))  # Histogram einer schmalen Verteilung mit 5000 Datenpunkten
 
 grid.arrange(histBreit, histSchmal, ncol = 2) # Arrangiere beide Histogramme in eine Grafik
 
@@ -36,7 +34,7 @@ min(verteilungen$schmal)
 max(verteilungen$breit) - min(verteilungen$schmal) # = Range
 
 # 6.3.2 Interquartilabstand
-IQR(verteilungen$breit) # Gibt den Interquartilabstand einer Variablen zurück
+IQR(verteilungen$breit) # Gibt den Interquartilabstand einer Variablen zur?ck
 quan75 <- quantile(verteilungen$breit, c(.75)) # 75. Quantile
 quan25 <- quantile(verteilungen$breit, c(.25)) # 25. Quantile
 quan75 - quan25 # Ergibt dasselbe wie IQR
@@ -52,7 +50,7 @@ verschiebungsSatz
 
 # Varianz
 varFromSS <- sumOfSquares / (nrow(verteilungen) - 1) # Aus SS wird die Varianz berechnet: SS / (n - 1)
-# (n - 1) = Bessel's correction; hier wird auf die Population geschlossen, da die Varianz aus der Stichprobe aller Vorraussicht kleiner ist, als in der Population. Dies liegt daran, dass es unwahrscheinlicher ist, die extremen Werte einer Population in einer Stichprobe zu erfassen. Durch die Division mit (n - 1) statt (n) wird die Varianz größer und nähert sich daher eher der Population an.
+# (n - 1) = Bessel's correction; hier wird auf die Population geschlossen, da die Varianz aus der Stichprobe aller Vorraussicht kleiner ist, als in der Population. Dies liegt daran, dass es unwahrscheinlicher ist, die extremen Werte einer Population in einer Stichprobe zu erfassen. Durch die Division mit (n - 1) statt (n) wird die Varianz gr??er und n?hert sich daher eher der Population an.
 # https://en.wikipedia.org/wiki/Bessel's_correction
 varFromSS
 var(verteilungen$breit)
@@ -90,7 +88,7 @@ normalVertAdditionMultiplikation <- normalVertAddition * 2
 
 # Vectoren
 values <- c(normalVert, normalVertAddition, normalVertMulitplikation, normalVertAdditionMultiplikation)
-cond <- c(rep("normal", 5000), rep("Addition", 5000), rep("Mulitplikation", 5000), rep("Addition + Multiplikation", 5000))
+cond <- c(rep("Normal", 5000), rep("Addition | + 70", 5000), rep("Mulitplikation | * 2", 5000), rep("Addition + Multiplikation | + 70 * 2", 5000))
 
 # Dataframe erzeugen
 dfBerechnung <- data.frame(Rechnung = cond, Wert = values)
