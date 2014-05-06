@@ -15,6 +15,7 @@
 # Packete laden
 library(ggplot2)
 library(gridExtra)
+library(reshape2)
 
 
 # ************************* 6.3 Statistiken für die Streuung von Variablen ********************
@@ -22,10 +23,9 @@ library(gridExtra)
 # Dataframe aus beiden Verteilungen erstellen
 verteilungen <- data.frame(breit = rnorm(5000, mean = 100, sd = 15), schmal = rnorm(5000, mean = 100, sd = 5))
 
-histBreit <- ggplot(verteilungen, aes(breit)) + geom_histogram(binwidth = 5, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung breit", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1200)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18)) # Histogram einer breiten Verteilung mit 5000 Datenpunkten
+histBreit <- ggplot(verteilungen, aes(breit)) + geom_histogram(binwidth = 5, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung breit", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18)) # Histogram einer breiten Verteilung mit 5000 Datenpunkten
 
-histSchmal <- ggplot(verteilungen, aes(schmal)) + geom_histogram(binwidth = 3, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung schmal", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1200)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18))  # Histogram einer schmalen Verteilung mit 5000 Datenpunkten
-
+histSchmal <- ggplot(verteilungen, aes(schmal)) + geom_histogram(binwidth = 3, colour = "black", fill = "grey") + theme_bw() + labs(title = "Streuung schmal", x = "Testergebnis", y = "absolute Häufigkeit") + scale_y_continuous(limits=c(0, 1300)) + scale_x_continuous(limits=c(30, 160)) + theme(plot.title = element_text(size = 18))  # Histogram einer schmalen Verteilung mit 5000 Datenpunkten
 
 grid.arrange(histBreit, histSchmal, ncol = 2) # Arrangiere beide Histogramme in eine Grafik
 
@@ -78,3 +78,23 @@ SSdf2
 matheNotenNatur <- c(12,12,12,12,12,12,12,12)
 SSmatheLeistung <- sum((matheNotenNatur - mean(matheNotenNatur))^2) # SS ausrechnen
 SSmatheLeistung
+
+
+# Eigenschaften der Varianz und Standardabweichung
+
+# Verteilungen
+normalVert <- rnorm(5000, mean = 50, sd = 10)
+normalVertAddition <- normalVert + 70
+normalVertMulitplikation <- normalVert * 2
+normalVertAdditionMultiplikation <- normalVertAddition * 2
+
+# Vectoren
+values <- c(normalVert, normalVertAddition, normalVertMulitplikation, normalVertAdditionMultiplikation)
+cond <- c(rep("normal", 5000), rep("Addition", 5000), rep("Mulitplikation", 5000), rep("Addition + Multiplikation", 5000))
+
+# Dataframe erzeugen
+dfBerechnung <- data.frame(Rechnung = cond, Wert = values)
+
+# Histogram erzeugen
+histBerechnungen <- ggplot(dfBerechnung, aes(Wert, fill = Rechnung)) + geom_density(alpha = .2) + labs(title = "Transformation von Verteilungen", x = "Wert", y = "Dichte") + theme(plot.title = element_text(size = 18))
+histBerechnungen
