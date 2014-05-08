@@ -1,6 +1,7 @@
 # Über die Vorlesung hinaus | Links und Ressourcen
 
 ## R
+* http://dss.princeton.edu/training/RStudio101.pdf (Einführung in R-Studio)
 
 ### Verschiedenes
 * https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml (Skripte richtig schreiben)
