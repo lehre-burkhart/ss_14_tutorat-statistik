@@ -2,6 +2,7 @@
 
 ## R
 * http://dss.princeton.edu/training/RStudio101.pdf (Einführung in R-Studio)
+* https://www.datacamp.com/?utm_source=R-bloggers&utm_medium=Add&utm_content=The%20r-blogger%20add&utm_campaign=R-bloggers-add
 
 ### Verschiedenes
 * https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml (Skripte richtig schreiben)
