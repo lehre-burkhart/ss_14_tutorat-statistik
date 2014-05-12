@@ -1,3 +1,6 @@
+# Lösungen zu den Tutoratsaufgaben
+* 01_Einführung in R: http://www.christianburkhart.de/01_Tutorat_Einfuehrung%20in%20R_loesung.html
+
 # Über die Vorlesung hinaus | Links und Ressourcen
 
 ## R
