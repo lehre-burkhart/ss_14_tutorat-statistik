@@ -112,6 +112,7 @@ any(is.na(day2))
 
 Die erste Funktion zeigt uns für jeden Wert der Variable, ob es sich um einen `NA` handelt. Die zweite Funktion sagt uns, ob mindestens ein `NA` in der Variable steckt. 
 
+
 Nachdem wir wissen, dass es `NA`s in der Variable gibt, können wir unseren Code verbessern.
 
 ```{r}
@@ -126,6 +127,13 @@ max(day2, na.rm = T)
 ```{r}
 
 ```
+
+### Finde Heraus, ob es fehlende Wert in der Variable day3 gibt, ohne die Variable zu betrachten
+
+```{r}
+
+```
+
 
 ### Und wie dreckig ist die dreckigste Person am dritten Tag des Festivals? 
 
