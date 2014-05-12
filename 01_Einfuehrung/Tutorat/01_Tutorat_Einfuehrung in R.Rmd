@@ -21,7 +21,7 @@ Bei der Datei handelt es sich um Daten von Festivalbesuchern. Die Datei hat 5 Va
 Aufgabe 2 | Working-Directory bestimmen
 ------------------------------
 
-Bestimmt zunächst das Working-Directory auf den Ordner, in dem die `festival.txt` Datei liegt. Benutzt hierfür die Funktion `setwd()`. Hierfür drückt ihr `Strg + Umschalt + Enter` auf eurem Keyboard. 
+Bestimmt zunächst das Working-Directory auf den Ordner, in dem die `festival.txt` Datei liegt. Benutzt hierfür die Funktion `setwd()`. Hierfür drückt ihr `Strg + Umschalt + K` auf eurem Keyboard. 
 
 In eurer Console sollte nun ein Befehl ausgeführt sein, der in etwa so aussieht: 
 
