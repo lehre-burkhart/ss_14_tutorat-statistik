@@ -1,0 +1,202 @@
+Tutorat | Statistik I | 12.05.2014
+
+01. Einfuerung in R
+===========================================
+
+
+Aufgabe 1 | Festival-Datei herunterladen
+----------------------------------
+
+* Ladet von folgender Webseite die Datei `festival.txt` herunter: 
+[https://github.com/ch-bu/tutorat_statistik/blob/master/01_Einfuehrung/Tutorat/festival.txt](https://github.com/ch-bu/tutorat_statistik/blob/master/01_Einfuehrung/Tutorat/festival.txt).
+* Speichert die Datei auf einen Ordner eures PCs. 
+
+Bei der Datei handelt es sich um Daten von Festivalbesuchern. Die Datei hat 5 Variablen. 
+* `thicknumb`: ID der Person
+* `gender`: Geschlecht der Person ("Male", "Female")
+* `day1`: Sauberkeit am ersten Tag des Festivals (0 = "Du stinkst ganz fuerchterlich" bis 4 = "Du riechst so angenehm wie Sonnencreme")
+* `day2`: Sauberkeit am zweiten Tag des Festivals
+* `day3`: Sauberkeit am dritten Tag des Festivals
+
+
+
+Aufgabe 2 | Working-Directory bestimmen
+------------------------------
+
+Bestimmt zunaechst das Working-Directory auf den Ordner, in dem die `festival.txt` Datei liegt. Benutzt hierfuer die Funktion `setwd()`. Hierfuer drueckt ihr `Strg + Umschalt + K` auf eurem Keyboard. 
+
+In eurer Console sollte nun ein Befehl ausgefuehrt sein, der in etwa so aussieht: 
+
+```
+setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/01_Einfuehrung/Tutorat")
+```
+
+Aufgabe 3 | Festival-Datei in R einlesen
+---------------------------------------
+
+Als naechstes laden wir die Datei in R. Versichert euch zunaechst mit folgendem Befehl, dass ihr euer Arbeitsverzeichnis richtig bestimmt habt:
+
+```{r}
+getwd()
+```
+
+Jetzt koennen wir die Datei laden. Hierfuer benutzen wir die `read.table()` Funktion. 
+
+```{r}
+festival <- read.table("festival.txt", header = TRUE, sep = "\t")
+```
+
+* `sep = "\t"` bedeutet, dass die Werte der Datei durch einen Tabstop getrennt sind. 
+* `festival`ist ein beliebiger Name. Wichtig ist nur, dass er nicht mit einer Zahl beginnt. 
+
+Aufgabe 4 | Den Datensatz kennenlernen
+----------------------------------------
+
+Nachdem der Datensatz geladen ist, koennen wir ihn betrachten. 
+Zunaechst moechten wir wissen, welche Variablen im Dataframe sind. 
+
+```{r}
+names(festival)
+```
+
+Eine Variable kann in R durch ein `$-Zeichen` aufgerufen werden. 
+
+```{r}
+festival$day1
+```
+
+Ihr seht alle 810 Werte dieser Variable. Jeder Wert ist die Sauberkeit einer Person am ersten Tag des Festivals. 
+
+Den kompletten Datensatz koennen wir mit folgender Funktion ansehen: 
+
+```{r}
+View(festival)
+```
+
+Damit wir nicht immer `festival$` vor einer Variable schreiben muessen, benutzen wir die `attach()` Funktion. Nachdem wir sie benutzt haben, genuegt es, `day1` fuer die Spalte des Dataframes zu schreiben. 
+
+```{r}
+attach(festival)
+day1
+```
+
+Aufgabe 4 | Deskriptive Statistik
+------------------------------------------------------
+
+### Wie sauber ist die sauberste Person am ersten Tag des Festivals?
+
+```{r}
+max(day1)
+```
+
+Auf einer Skale von 0 bis 4 hat die sauberste Person einen Wert von 3.69. 
+
+### Wie dreckig ist die dreckigste Person am ersten Tag des Festivals?
+
+Erinnert euch an die Funktion, die statt dem maximalen den minimalen Wert einer Variable findet. 
+
+```{r}
+min(day1)
+```
+
+### Wie sauber ist die sauberste Person am zweiten Tag des Festivals? 
+
+```{r}
+max(day2)
+```
+
+Wenn wir diese Zeile ausfuehren, bekommen wir einen `NA`. Allerdings konnten wir unter `View()` sehen, dass es in der Variable Werte gibt. Das Ergebnis `[1] NA` kommt zu Stande, weil wir der Funktion nicht gesagt haben, dass es fehlende Werte in der Variablen gibt. Dies koennen wir auch durch eine Funktion herausfinden:
+
+```{r}
+is.na(day2)
+any(is.na(day2))
+```
+
+Die erste Funktion zeigt uns fuer jeden Wert der Variable, ob es sich um einen `NA` handelt. Die zweite Funktion sagt uns, ob mindestens ein `NA` in der Variable steckt. 
+
+
+Nachdem wir wissen, dass es `NA`s in der Variable gibt, koennen wir unseren Code verbessern.
+
+```{r}
+max(day2, na.rm = T)
+```
+
+`na.rm = T` sagt der Funktion, dass `NA`s in der Variable sind. Wir sehen, dass bereits am zweiten Tag die sauberste Person nicht mehr so sauber ist, wie die sauberste Person am ersten Tag. 
+
+
+### Wie dreckig ist die dreckigste Person am zweiten Tag des Festivals?
+
+```{r}
+min(day2, na.rm = T)
+```
+
+### Finde Heraus, ob es fehlende Wert in der Variable day3 gibt, ohne die Variable zu betrachten
+
+```{r}
+any(is.na(day3))
+```
+
+
+### Und wie dreckig ist die dreckigste Person am dritten Tag des Festivals? 
+
+```{r}
+min(day3, na.rm = T)
+```
+
+
+Aufgabe 5 | Teile des Datensatzes betrachten
+------------------------------------------------------
+
+Mit `max()` und `min()` finden wir die hoechsten und niedrigsten Werte einer Variablen. Wir wissen aber nicht, welche Personen diese Werte haben. Hierfuer gibt es die `which.max()` und `which.min()` Funktionen. 
+
+```{r}
+dirty <- which.min(day2)
+dirty
+```
+
+Mit `which.in(day2)` findet die Zeile der Person, die am zweiten Tag am dreckigsten ist. Wir speichern diesen Wert in der Variable `dirty`. 
+
+Wir wissen aber noch nicht, wie wir die Person aufgrund der Zahl finden. Wir koennten in `View()` die Zeile suchen. Das wuerde auf Dauer aber zu lange dauern. Alternativ koennen wir auch nur Ausschnitte des Dataframes betrachten.
+
+```{r}
+festival[1,]
+festival[1,2]
+festival[1, c(2:5)]
+
+festival[c(1:5), ]
+festival[c(1:3), c(1,3,5)]
+```
+
+Mit der eckigen Klammer koennen wir Teile des Dataframes betrachten. Das Komma in der Mitte trennt Zeilen von Spalten. Links vom Komma stehen die Zeilen, rechts die Spalten. Mit `c()` bestimmen wir die Anzahl der Zeilen und/oder Spalten, die wir betrachten wollen.  
+
+### Zeige die Zeilen 300 bis 305 mit allen Spalten
+
+```{r}
+festival[c(300:305),]
+```
+
+
+### Zeige die Zeile 466 mit den Spalten 3 bis 5
+
+```{r}
+festival[466, c(3, 5)]
+```
+
+
+### Wer ist die dreckigste Person am zweiten Tag des Festivals? 
+
+Erinnert euch, dass wir die Zeile der Person in der Variable `dirty` gespeichert haben. Diese koennen wir nun statt einer Zahl verwenden. 
+
+```{r}
+festival[dirty,]
+```
+
+
+
+
+
+
+
+
+
+
