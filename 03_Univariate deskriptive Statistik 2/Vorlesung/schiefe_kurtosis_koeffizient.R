@@ -35,7 +35,7 @@ kurtosis <- function(x) {
   #
   # Kurtosiskoeffizient einer 
   # Verteilung
-  # x = Variable, deren Schiefe
+  # x = Variable, deren Kurtosis
   # berechnet werden soll
   #
   ############################
