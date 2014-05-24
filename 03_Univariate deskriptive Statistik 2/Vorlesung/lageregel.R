@@ -4,6 +4,8 @@ lageregel <- function(x) {
   # Gibt Mittelwert, Median
   # und Modus der Variablen 
   # zurück
+  # Bestimmt hieraus die Schiefe
+  # der Verteilung
   #
   ##############################
   
