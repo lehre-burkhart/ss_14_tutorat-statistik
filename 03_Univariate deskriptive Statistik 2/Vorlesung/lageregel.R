@@ -1,3 +1,18 @@
+##################################################################
+#
+# 03_Univariate deskriptive Statistik 2
+# Funktion für die Lageregeln
+#
+# Albert-Ludwigs-Universität Freiburg
+# Institut für Erziehungswissenschaft
+# SS 2014
+# Studienfach: Bildungswissenschaft und Bildungsmanagement (B.A.)
+# Seminar: Statistik I
+# 24.05.2014
+#
+###################################################################
+
+
 lageregel <- function(x) {
   ##############################
   #
@@ -26,8 +41,7 @@ lageregel <- function(x) {
       if (med < mode) {
         return("-> linksschief")
       }
-    }
-    
+    } 
   } else {
     print("Variable hat keine Werte")
   }
