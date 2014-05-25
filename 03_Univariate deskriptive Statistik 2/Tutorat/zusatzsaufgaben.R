@@ -139,8 +139,8 @@ skewness <- function(x) {
 # 8. Aufgabe - Beschreibung der Schiefe
 # Beschreibe die Schiefe beider Gruppen in deinen eigenen Worten. 
 # Gehe dabei darauf ein, ob es sich um eine links- oder rechtschiefe
-# Verteilung handelt. Erkläre dies anhand des Schiefekoeffiziente
-# der Funktion kurtosis.
+# Verteilung handelt. Erkläre dies anhand des Schiefekoeffizienten
+# der Funktion skewness
 #
 # Antwort:
 #
