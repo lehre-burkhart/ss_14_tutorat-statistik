@@ -1,0 +1,186 @@
+Tutorat | Statistik I | 16.06.2014
+
+04 - Standardisierung von Werten
+========================================================
+
+```{r}
+setwd("C:/Users/Christian/Dropbox/christian_hiwi/_statistik i_tutorat/04_Standardisierung von Werten/Tutorat")
+```
+
+## Aufgabe 1
+Sie arbeiten in der Schulberatungsstelle help. Frau und Herr Mueller kommen zu Ihnen in die Sprechstunde und berichten ueber ihren Sohn Martin, der seit dem Wechsel auf das  Gymnasium offensichtlich die Lust an Mathematik verloren hat. Dies finden die Eltern sehr  verwunderlich, weil Martin zwar am Ende der Grundschulzeit in Mathematik die Note eins hatte, nun auf dem Gymnasium mit der Note zwei auf dem Halbjahreszeugnis aber immer  noch relativ gut ist.
+Sie bitten den ehemaligen Mathematiklehrer und den aktuellen Mathematiklehrer von  Martin um die Mathematikzeugnisnoten aller SuS seiner ehemaligen und jetzigen Klasse.  Die beiden Lehrer sind kooperativ und lassen Ihnen die Noten in anonymisierter Form  zukommen.
+Sie haben die Mathematiknoten beider Klassen in einer Datei 04_noten.txt  zusammengefasst. Die Variable fuer die Noten der Grundschulklasse lautet grund, die fuer  die Noten der Gymnasialklasse lautet gym. 
+
+```{r}
+noten <- read.table("04_noten.txt", header = T)
+str(noten)
+```
+
+
+a) Nehmen Sie in R eine z-Standardisierung der Noten von beiden Klassen vor. Nennen 
+Sie die resultierenden Variablen grund_z und gym_z.
+
+```{r}
+grund_z <- scale(noten$grund)  # Standardisierung der Variable grund
+gym_z <- scale(noten$gym)  # Standardisierung der Variable gym
+```
+
+
+d) Fuegen Sie zur Dokumentation die beiden z-standardisierten Variablen grund_z und gym_z Ihrer Datei an.
+
+```{r}
+noten$grund_z <- grund_z
+noten$gym_z <- gym_z
+head(noten)
+```
+
+
+b) Bestimmen Sie, wie der entsprechende z-Wert fuer die Note eins in der Grundschule und der entsprechende z-Wert fuer die Note zwei im Gymnasium lauten.
+
+```{r}
+# Filtert den Dataframe Note 1 in Spalte grund und zeigt die Spalten grund und grund_z an:
+noten[noten$grund == 1, c("grund", "grund_z")]  
+
+# Filtert den Dataframe Note 2 in Spalte gym und zeigt die Spalten gym und gym_z an:
+noten[noten$gym == 2, c("gym", "gym_z")]
+```
+
+
+c) Koennen Sie anhand der erhaltenen Ergebnisse die Lustlosigkeit von Martin erklaeren?
+
+```
+Martin hatte war in der Grundschulzeit im Vergleich zu seinen Mitschuelern -1.52 Standardabweichungen unter dem Durchschnitt. Dies bedeutet, er war im Fach Mathematik deutlich besser als der Durchschnitt der KLasse. 
+Im Gymnasium hat er eine 2 und damit einen Z-Wert von 0.87. Dies bedeutet, es ist in dieser Klasse schlechter als der Durchschnitt. 
+Im Klassenvergleich liegt er somit ueber dem Durchschnitt. Dies bedeutet, er ist im Schnitte schlechter als seine Klassenkameraden.
+Seine gestegene Lustlosigkeit liesse sich durch den Fischteicheffekt erklaeren
+```
+Fischteicheffekt: https://de.wikipedia.org/wiki/Fischteicheffekt
+
+## Aufgabe 2
+Ihnen liegen die normalverteilten Daten von 1000 Personen zur Anzahl richtiger geloester Aufgaben in einem Intelligenztest vor. Die Datei lautet 04_intelligenz.txt mit der  Variablen anz.
+
+```{r}
+intelligenz <- read.table("04_intelligenz.txt", header = T)
+str(intelligenz)
+```
+
+
+a)  Nehmen Sie in R eine z-Standardisierung fuer die Anzahl richtig geloester Aufgaben vor. Nennen Sie die resultierende Variable anz_z.
+
+```{r}
+anz_z <- scale(intelligenz$anz)
+```
+
+
+e)  Fuegen Sie zur Dokumentation die z-standardisierte und die IQ-standardisierte Variablen anz_z und iq Ihrer Datei an.
+
+```{r}
+intelligenz$anz_z <- anz_z
+```
+
+
+b)  Wie viele Personen (in %) haben 20 oder mehr richtig geloeste Aufgaben?
+
+```{r}
+# Deskriptiv aus den Daten berechnet
+anz.20.or.more <- sum(intelligenz$anz >= 20)  # Anzahl der Personen mit mehr als 20 richtigen Loesungen
+anz.sum <- sum(!is.na(intelligenz$anz))  # Anzahl der Personen der Variable anz ohne NAs
+cat(anz.20.or.more / anz.sum * 100, "%", sep = "")  # Ergebnis wird angzeigt und mit der Funktion cat formatiert
+# Anhand einer Standardnormalverteilung berechnet
+head(intelligenz[intelligenz$anz == 20, ], n = 3)  # Z-Wert fuer 20 richtige Aufgaben
+prozent20 <- 1 - pnorm(-1.008) # Gibt die Flaeche ueber einem Z-Wert einer Standardnormalverteilung zurueck
+cat(round(prozent20 * 100, 2), "%", sep = " ")
+```
+
+
+c) Wie viele Personen (in %) haben 32 oder mehr richtig geloeste Aufgaben?
+
+```{r}
+# Deskriptiv aus den Daten berechnet
+anz.32.or.more <- sum(intelligenz$anz >= 32)  # Anzahl der Personen mit mehr als 32 richtigen Loesungen
+anz.sum <- sum(!is.na(intelligenz$anz))  # Anzahl der Personen der Variable anz ohne NAs
+cat(anz.32.or.more / anz.sum * 100, "%", sep = "")  # Ergebnis wird angzeigt und mit der Funktion cat formatiert
+# Anhand einer Standardnormalverteilung berechnet
+head(intelligenz[intelligenz$anz == 32, ], n = 3)  # Z-Wert fuer 32 richtige Aufgaben
+prozent32 <- 1 - pnorm(1.419) # Gibt die Flaeche ueber einem Z-Wert einer Standardnormalverteilung zurueck
+cat(round(prozent32 * 100, 2), "%", sep = " ")
+```
+
+Hilfreicher Link fuer die Aufgabe: http://www.stat.berkeley.edu/~stark/Java/Html/NormHiLite.htm
+
+
+d) Transformieren Sie in R die z-Werte so, dass Sie IQ-Werte mit einem Mittelwert von  100 und einem Standardabweichung von 15 erhalten. Nennen Sie die resultierende Variable iq.
+
+```{r}
+iq.anz_z <- 100 + 15 * anz_z  # Transformation in IQ-Werte
+intelligenz$iq.anz_z <- iq.anz_z  # IQ-Werte werden dem Dataframe angefuegt
+names(intelligenz)  # Die Variablen des Dataframes wird angezeigt
+mean(intelligenz$iq.anz_z)  # Mittelwert der IQ-Werte
+sd(intelligenz$iq.anz_z)  # Standardabweichung der IQ-Werte
+```
+
+
+## Aufgabe 3
+Sie haben bei Ihren Mitstudierenden die Freude an der Vorbereitung der StatistikVorlesung erhoben. Hierzu haben Sie eine 5-stufige Skala von 1 = ueberhaupt keine Freude bis 5 = sehr hohe Freude verwendet. Die Ergebnisse finden Sie in der Datei 04_freude.txt mit der Variablen freu.
+
+```{r}
+freude <- read.table("04_freude.txt", header = T)
+str(freude)
+```
+
+
+a) Ermitteln Sie in R die 5-Punkte-Zusammenfassung fuer die Variable freu und bestimmen Sie mit dieser Zusammenfassung den Interquartilbereich sowie den 1.5-und 3.0-fachen Interquartilabstand.
+
+```{r}
+summary(freude$freu)  # 5-Punkte-Zusammenfassung
+quantile(freude$freu, c(.25, .75))  # 25. und 75. Quantile werden angezeigt
+
+lowerq <- quantile(freude$freu)[2]  # 25. Quantil wird in der Variable gespeichert
+upperq <- quantile(freude$freu)[4]  # 75. Quantil wird in der Variable gespeichert
+iqr <- upperq - lowerq  # Interquartilabstand wird aus dem oberen und unterem Quartil berechnet
+
+ausreisser.threshold.upper <- (iqr * 1.5) + upperq  # Threshold fuer ein Ausreisser im oberen Teil der Verteilung
+ausreisser.threshold.lower <- lowerq - (iqr * 1.5)  # Threshold fuer ein Ausreisser im unteren Teil der Verteilung
+
+extremwert.threshold.upper <- (iqr * 3) + upperq  # Threshold fuer ein Extremwert im oberen Teil der Verteilung
+extremwert.threshold.lower <- lowerq - (iqr * 3)  # Threshold fuer ein Extremwert im unteren Teil der Verteilung
+
+
+```
+
+
+b) Sagen Sie anhand der Ergebnisse, ob es einen Ausreisser oder einen Extremwert gibt.
+
+Ausreisser:
+```{r}
+which(freude$freu > ausreisser.threshold.upper)  # Zeigt an, welcher Wert als oberer Ausreisser zu betrachten ist
+which(freude$freu < ausreisser.threshold.lower)  # Zeigt an, welcher Wert als unterer Ausreisser zu betrachten ist
+```
+
+Extremwerte:
+```{r}
+which(freude$freu > extremwert.threshold.upper)  # Zeigt an, welcher Wert als oberer Extremwert zu betrachten ist
+which(freude$freu < extremwert.threshold.lower)  # Zeigt an, welcher Wert als oberer Extremwert zu betrachten ist
+```
+
+Anzeige des Extremwertes
+```{r}
+freude[50, ]
+```
+
+Nuetzlicher Link: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Boxplot_vs_PDF.svg/598px-Boxplot_vs_PDF.svg.png
+
+
+c.  Erstellen Sie einen Boxplot und geben Sie an, ob Sie aufgrund des Boxplots einen Ausreisser oder Extremwert erkennen.
+
+```{r}
+boxplot(freude$freu)
+```
+
+
+d) Wenn Sie einen Extremwert oder Ausreisser erkennen, handelt es sich bei diesem Wert um eine fehlerhafte Eingabe oder um einen echten, aber eher unwahrscheinlichen Wert? 
+
+```
+Bei diesen Daten handelt es sich um eine fehlerhafte Eingabe, da die Skala Werte von 1 bis 5 beinhaltet. Daher kann es keinen Wert 0 geben. 
+```
