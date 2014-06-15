@@ -11,6 +11,7 @@
 ### Nachschlageseiten
 * http://www.statmethods.net/
 * http://www.r-tutor.com/
+* Z-Table: http://www.stat.ufl.edu/~athienit/Tables/Ztable.pdf
 
 ## Weiterlernen
 

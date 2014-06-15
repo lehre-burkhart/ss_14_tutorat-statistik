@@ -107,7 +107,9 @@ prozent32 <- 1 - pnorm(1.419) # Gibt die Flaeche ueber einem Z-Wert einer Standa
 cat(round(prozent32 * 100, 2), "%", sep = " ")
 ```
 
-Hilfreicher Link fuer die Aufgabe: http://www.stat.berkeley.edu/~stark/Java/Html/NormHiLite.htm
+Hilfreicher Link fuer die Aufgabe: 
+* http://www.stat.berkeley.edu/~stark/Java/Html/NormHiLite.htm
+* Z-Table: http://www.stat.ufl.edu/~athienit/Tables/Ztable.pdf
 
 
 d) Transformieren Sie in R die z-Werte so, dass Sie IQ-Werte mit einem Mittelwert von  100 und einem Standardabweichung von 15 erhalten. Nennen Sie die resultierende Variable iq.
