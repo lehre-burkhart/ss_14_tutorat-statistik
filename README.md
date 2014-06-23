@@ -10,3 +10,4 @@ Die Skripte dienen der Vertiefung der Inhalte der Vorlesung. Sie können frei her
 
 ## Zusatzsskripte zum Tutorat
 * 04_Standardisierung von Werten: http://www.christianburkhart.de/static/tutorat/zusatz/04_Standardisierung_von_Werten_Tutorat.html
+* 04_Zusatzstutorat: http://www.christianburkhart.de/static/tutorat/zusatz/04_Zusatstutorat_loesungen.html
