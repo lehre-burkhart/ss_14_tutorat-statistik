@@ -1,0 +1,47 @@
+Tutorat | Statistik I | 30.06.2014
+
+05 - Bivariate Statistik Einführung
+========================================================
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+#setwd("~/Dropbox/Christian_HiWi/_Statistik I_Tutorat/05_Bivariate deskriptive Statistik 1/Tutorat")
+setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/05_Bivariate deskriptive Statistik 1/Tutorat")
+```
+
+#### Datensatz der Studenten laden
+```{r}
+studis <- read.csv("studidaten.csv", header= T, sep =",")  # Datensatz der Studierenden
+```
+
+#### Scatterplot zwischen der Schuhgröße und der Körpergröße
+```{r}
+scat.studis <- ggplot(studis, aes(x = shoesize, y = height)) + geom_point(size = 6) + geom_smooth(method = lm, se = F) + labs(title = "Scatterplot Schuhgroesse und Koerpergroesse", x = "Schuhgroesse", y = "Koerpergroesse")
+scat.studis
+```
+
+#### Korrelation 
+
+```{r}
+cor(studis$shoesize, studis$height, use="complete.obs")  # Produkt-Moment-Korrelation
+```
+
+*use="complete.obs": Der Datensatz enthält NAs. Damit die Korrelation in R gerechnet werden kann, wird dieses Argument übergeben. Zeilen, die ein NA enthalten, werden nicht für die Berechnung der Korrelations verwendet. 
+
+
+### Der Korrelationskoeffizient und der Scatterplot
+
+http://rlanders.net/correlation.html
+
+
+#### Weitere Links
+
+* https://stats.stackexchange.com/questions/36/examples-for-teaching-correlation-does-not-mean-causation
+* https://stats.stackexchange.com/questions/534/under-what-conditions-does-correlation-imply-causation
+
+
+
