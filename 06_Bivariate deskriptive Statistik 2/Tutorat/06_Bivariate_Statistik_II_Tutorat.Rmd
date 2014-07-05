@@ -1,0 +1,297 @@
+Tutorat | Statistik I | 07.07.2014
+
+06 - Bivariate Statistik II | Tutorat
+========================================================
+
+```{r}
+suppressWarnings(suppressMessages(library(Hmisc)))
+suppressWarnings(suppressMessages(library(ggplot2)))
+suppressWarnings(suppressMessages(library(heplots)))
+```
+
+
+## Zusammenhangsmaße
+
+### Ordinalskalierte Variablen
+
+#### Spearmans p
+
+Zunächst legen wir einen Dataframe mit zwei Variablen an. Die erste Variable steht für die soziale Kompetenz der Probanden. Sie hat eine Skala von 100 (sehr kompetent) bis 0 (gar nicht kompetent). Die zweite Variable lautet beruflicher Erfolg. Sie hat die gleiche Skalierung wie die Variable soziale Kompetenz.
+
+```{r}
+studie <- data.frame(sozKomp = c(100, 90, 80, 70, 70, 50, 50, 40), 
+                     berufErfolg = c(80, 90, 100, 70, 60, 60, 40, 50))
+studie$rangSoz <- rank(-studie$sozKomp)
+studie$rangBeruf <- rank(-studie$berufErfolg)
+studie
+```
+
+Mit der Funktion rank() lassen sich die Ränge der Werte berechnen. Ob die Ränge aufsteigend oder absteigend angeordnet werden, macht für die Spearman Korrelation keinen Unterschied. Es ist allerdings wichtig, dass beide Ränge entweder absteigend oder aufsteigend gebildet werden. Würde man eine die Ränge einer Variablen absteigend und die Ränge der anderen Variable aufsteigend sortieren, würde sich das Vorzeichen des Korrelationskoeffizienten ändern. 
+
+
+Als nächstes schreiben wir eine Funktion, die Spearman's Rho in allen einzelnen Schritten ausrechnet. Die Funktion erhält zwei Argument. Die Variable x und die Variable y. 
+
+```{r}
+spearman.rho <- function(x, y) {
+  # Berechnet den Korrelationskoeffizienten Spearman's Rho.
+  #
+  # Args:
+  #   x: Erster Vector (keine Rangordnung)
+  #   y: Zweiter Vector (keine Rangordnung)
+  #
+  # Return:
+  #   Den Korrelationskoeffizienten Spearman's Rho
+  
+  x.rank <- rank(x)
+  y.rank <- rank(y)
+  
+  mean.x <- mean(x.rank)
+  mean.y <- mean(y.rank)
+  
+  r.numerator <- sum((x.rank - mean.x) * (y.rank - mean.y))
+  r.denominator <- sqrt(sum((x.rank - mean.x)^2)) *
+                  sqrt(sum((y.rank - mean.y)^2))
+  
+  return(r.numerator/r.denominator)
+}
+```
+
+
+Nun können wir Spearman's Rho berechnen. Wir können verschiedene Transformationen der Variablen ausführen und stellen fest, dass sich der Koeffizient *nicht* ändert. 
+```{r}
+spearman.rho(studie$sozKomp, studie$berufErfolg)
+spearman.rho(studie$sozKomp * 3, studie$berufErfolg * 3)
+spearman.rho(studie$sozKomp + 3, studie$berufErfolg + 5)
+spearman.rho(studie$sozKomp + 3, studie$berufErfolg - 456)
+spearman.rho(studie$sozKomp * 1.48, studie$berufErfolg / 23)
+```
+
+Um festzustellen, ob unsere Funktionen keinen Rechenfehler besitzt, verwenden wir die Funktion cor, welche ebenso Spearman's Rho berechnen kann. 
+
+```{r}
+cor(studie$rangSoz, studie$rangBeruf, method="spearman")  # Sanity check
+```
+
+Wir stellen fest, dass der Korrelationskoeffizient identisch ist. Die Funktion berechnet den Koeffizienten korrekt. 
+
+
+#### Konkordanz und Diskonkordanz
+
+```{r}
+dat <- data.frame(x = c(2, 1, 3, 4.5, 4.5, 6, 8, 7, 9, 10), 
+                  y = c(1, 2, 3, 4.5, 4.5, 6.5, 6.5, 8, 9, 10))
+dat
+```
+
+```{r}
+conc.disconc <- function(x) {
+  # Berechnet die Konkordanzen, Diskonkordanzen, TX und TY zweier
+  # rangeordneter Variablen
+  #
+  # Args:
+  #   x: Erster Vector; Die Werte müssen ranggeordnet sein
+  #   y: Zweiter Vector; Die Werte müssen ranggeordnet sein
+  #
+  # Return:
+  #   Liste, mit der Anzahl der Konkordanzen, Diskonkordanzen, TX
+  #   und TY.
+  
+  rows <- nrow(x)  # Number of comparisons
+  Concord <- c()
+  Disconc <- c()
+  TX <- c()
+  TY <- c()
+  
+  # Loop over all pairs
+  for (i in c(1:rows - 1)) {
+    start <- i + 1
+    
+    while (start <= rows) {
+      
+      concTemp <- (x[i, 1] > x[start, 1] & x[i, 2] > x[start, 2]) |  
+                  (x[i, 1] < x[start, 1] & x[i, 2] < x[start, 2])
+      
+      disconcTemp <- (x[i, 1] > x[start, 1] & x[i, 2] < x[start, 2]) |  
+                     (x[i, 1] < x[start, 1] & x[i, 2] > x[start, 2])
+      
+      txTemp <- x[i, 1] == x[start, 1] & x[i, 2] > x[start, 2]
+      
+      tyTemp <- (x[i, 1] > x[start, 1] & x[i, 2] == x[start, 2]) |
+                (x[i, 1] < x[start, 1] & x[i, 2] == x[start, 2])
+      
+      
+      if (isTRUE(concTemp)) {
+        Concord <- c(Concord, concTemp)
+      } else if (isTRUE(disconcTemp)) {
+        Disconc <- c(Disconc, disconcTemp)
+      } else if (isTRUE(txTemp)) {
+        TX <- c(TX, txTemp)
+      } else if (isTRUE(tyTemp)) {
+        TY <- c(TY, tyTemp)
+      }
+      
+      start <- start + 1
+    }
+  }
+  
+  return(list(C = sum(Concord), D = sum(Disconc), 
+              TX = sum(TX), TY = sum(TY)))
+}
+
+data <- conc.disconc(dat)
+data
+
+```
+
+Die Funktion gibt uns nun die Anzahl der Konkordanzen und der Diskonkordanzen zurück. Zusätzlich wird TX und TY berechnet, welches für Kendall's Tau benötigt wird. 
+
+#### Goodmann-Kruskal (y)
+
+Aus den Konkordanzen und Diskonkordanzen lässt sich nun Goodmann-Kruskal (y) berechnen. Die Formel ist sehr einfach und lässt sich mit folgender Funktion bestimmen. 
+
+```{r}
+goodmann.kruskal.y <- function(x) {
+  # Berechnet den Korrelationskoeffizienten nach Goodman-Kruskal (y)
+  #
+  # Args:
+  #   x: Erster Vector; Die Werte müssen ranggeordnet sein
+  #   y: Zweiter Vector; Die Werte müssen ranggeordnet sein
+  #
+  # Return:
+  #   Korrelationskoeffizient nach Goodman-Kruskal
+  
+  data <- conc.disconc(x)
+  
+  C <- as.numeric(data[1])
+  D <- as.numeric(data[2])
+  TX <- as.numeric(data[3])
+  TY <- as.numeric(data[4])
+  
+  return((C - D) / (C + D))
+}
+
+goodmann.kruskal.y(dat)
+rcorr.cens(dat$x, dat$y, outx=T)[2]  # Sanity check
+```
+
+
+#### Kendall's Tau
+
+Kendall's Tau berechnet sich ebenso aus den Diskonkordanzen und Konkordanzen. Zusätzlich wird noch TX und TY hinzugenommen. 
+
+```{r}
+kendalls.tau <- function(x) {
+  # Berechnet den Korrelationskoeffizienten Kendall's Tau
+  #
+  # Args:
+  #   x: Erster Vector; Die Werte müssen ranggeordnet sein
+  #   y: Zweiter Vector; Die Werte müssen ranggeordnet sein
+  #
+  # Return:
+  #   Korrelationskoeffizient Kendall's Tau
+  
+  data <- conc.disconc(x)
+  
+  C <- as.numeric(data[1])
+  D <- as.numeric(data[2])
+  TX <- as.numeric(data[3])
+  TY <- as.numeric(data[4])
+  
+  return((C - D) / (sqrt(C + D + TX) * sqrt(C + D + TY)))
+}
+
+kendalls.tau(dat)
+cor(dat$x, dat$y, method="kendall")  # Sanity check
+```
+
+
+
+### Nominalskalierte Daten
+
+#### Chi-Quadrat
+
+Nehmen wir an, wir finden folgende empirische Werte zweier nominalskalierter Variablen: 
+
+```{r}
+empiric.table <- rbind(c(60, 80), c(20, 40))
+empiric.table
+```
+
+
+Aus diesen Werten können wir nun ausrechnen, wie die Werte verteilt wären, wenn die Daten unabhängig sind. 
+
+```{r}
+spalte1 <- empiric.table[1, 1] + empiric.table[2, 1]
+spalte2 <- empiric.table[1, 2] + empiric.table[2, 2]
+
+zeile1 <- empiric.table[1, 1] + empiric.table[1, 2]
+zeile2 <- empiric.table[2, 1] + empiric.table[2, 2]
+
+prozent.spalte1 <- spalte1 / sum(empiric.table)
+prozent.spalte2 <- spalte2 / sum(empiric.table)
+
+werte.unabhaengig <- c(prozent.spalte1 * zeile1, prozent.spalte2 * zeile1, 
+                       prozent.spalte1 * zeile2, prozent.spalte2 * zeile2)
+
+
+independent.table <- rbind(c(werte.unabhaengig[1], werte.unabhaengig[2]), 
+                     c(werte.unabhaengig[3], werte.unabhaengig[4]))
+
+empiric.table
+independent.table
+```
+
+Die X-Statistic bildet sich nun aus diesen beiden Tabellen. 
+
+```{r}
+X.squared <- ((empiric.table[1, 1] - independent.table[1, 1])^2 / independent.table[1, 1]) +
+             ((empiric.table[1, 2] - independent.table[1, 2])^2 / independent.table[1, 2]) +
+             ((empiric.table[2, 1] - independent.table[2, 1])^2 / independent.table[2, 1]) +
+             ((empiric.table[2, 2] - independent.table[2, 2])^2 / independent.table[2, 2])
+X.squared
+```
+
+
+#### Cramers V
+
+Cramers V wird aus der Chi-Statistik berechnet und nimmt den maximalen Wert in Betracht, die die Chi-Statistik annehmen kann. 
+
+```{r}
+V <- round(sqrt(X.squared / (sum(empiric.table) * (1))), 3)
+V
+```
+
+
+### Unterschiedlich skalierte Variablen
+
+#### Eta-Quadrat (Zusammenhang nominalskalierter und metrischer Variable)
+
+```{r}
+data <- data.frame(L = c("A", "A", "B", "B", "C", "C"), 
+                   D = c(2, 4, 3, 5, 4, 6))
+
+QS.T <- sum((data$D - mean(data$D))^2)  # Gesamte Variation
+QS.W <- (data$D[1] - mean(data$D[c(1, 2)]))^2 + 
+        (data$D[2] - mean(data$D[c(1, 2)]))^2 + 
+        (data$D[3] - mean(data$D[c(3, 4)]))^2 +
+        (data$D[4] - mean(data$D[c(3, 4)]))^2 +
+        (data$D[5] - mean(data$D[c(5, 6)]))^2 + 
+        (data$D[6] - mean(data$D[c(5, 6)]))^2  # Variation innerhalb von L
+QS.B <- (mean(data$D[c(1, 2)]) - mean(data$D))^2 + 
+        (mean(data$D[c(1, 2)]) - mean(data$D))^2 + 
+        (mean(data$D[c(3, 4)]) - mean(data$D))^2 + 
+        (mean(data$D[c(3, 4)]) - mean(data$D))^2 + 
+        (mean(data$D[c(5, 6)]) - mean(data$D))^2 + 
+        (mean(data$D[c(5, 6)]) - mean(data$D))^2  # Variation zwischen L
+
+
+eta.squared <- QS.B / QS.T
+eta.squared
+eta <- round(sqrt(eta.squared), 2)
+eta
+
+model <- aov(D ~ L, data=data)
+etasq(model)  # Sanity check
+```
+
+
