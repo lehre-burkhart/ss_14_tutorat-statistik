@@ -1,0 +1,257 @@
+Tutorat | Statistik I | 07.07.2014
+
+06 - Bivariate Statistik II | Nachbereitungsaufgaben
+========================================================
+
+```{r}
+suppressWarnings(suppressMessages(library(Hmisc)))
+suppressWarnings(suppressMessages(library(vcd)))
+suppressWarnings(suppressMessages(library(heplots)))
+```
+
+```{r}
+setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/06_Bivariate deskriptive Statistik 2/Tutorat")
+```
+
+
+## Aufgabe 1
+Nachfolgend sehen Sie Beispiele für Zusammenhänge. Geben Sie für jedes Beispiel an, welches Zusammenhangsmaß Sie berechnen würden (es können auch mehrere sein).
+
+
+### a.  Zusammenhang zw. Geschlecht und Mitgliedschaft im Fußballverein
+
+* Geschlecht: nominalskaliert (dichotom)
+* Mitgliedschaft im Fußballverein: nominalskaliert
+
+```
+Chi-Quadrat
+Cramers V
+```
+
+
+### b.  Zusammenhang zw. Mathenote und Deutschnote in Klasse 7
+
+* Mathenote: rangskaliert
+* Deutschnote: rangskaliert
+
+```
+Spearman's Rho
+Kendall's Tau
+Goodmann-Kruskal (y)
+```
+
+### c.  Zusammenhang zw. Klassenzugehörigkeit (6a, 6b, 6c, 6d) und Intelligenz
+
+* Klassenzugehörigkeit: nominalskaliert (mehrere Ausprägungen)
+* Intelligenz: intervallskaliert
+
+```
+Eta-Quadrat
+```
+
+### d.  Zusammenhang zw. Besuch der Vorlesung und Punktewert in Klausur
+
+* Besuch der Vorlesung: nominalskaliert (dichotom)
+* Punktewert in Klausur: intervallskaliert
+
+```
+Punktbiseriale Korrelation
+```
+
+### e.  Zusammenhang zw. Studienabschluss (BA, MA) und Abschlussnote 
+
+* Studienabschluss: rangskaliert
+* Abschlussnote: rangskaliert
+
+```
+Spearman's Rho
+Kendall's Tau
+Goodmann-Kruskal (y)
+```
+
+### f.  Zusammenhang zw. Schulartzugehörigkeit (z.B. Gymnasium) und Leistung bei PISA
+
+* Schulartzugehörigkeit: rangskaliert / nominalskaliert (mehrere Ausprägungen)
+* Leistung in PISA: intervallskaliert
+
+``` 
+Eta-Quadrat
+```
+
+## Aufgabe 2
+Sie haben bei N = 20 SuS verschiedene Variablen erhoben. Diese sind:
+* Geschlecht (gesch): weiblich (= 0), männlich (= 1)
+* Bundesland (bundl): BW (= 0), NRW (= 1), HE (= 2)
+* Schulartzugehörigkeit (schulart): Hauptschule (= 1), Realschule (= 2), Gymnasium (= 
+3)
+* Beruf der Eltern (beruf): ungelernte Arbeitskraft (= 1), Selbständiger (= 2), obere 
+Dienstklasse (= 3)
+* Leistung in Mathe (mathe): in Punkten
+* Leistung in Deutsch (deutsch): in Punkten
+
+```{r}
+daten <- read.table("06_daten.txt", header=T, sep="\t")
+str(daten)
+daten
+```
+
+### a) Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Geschlecht und Bundesland gibt.
+
+
+* Geschlecht: nominalskaliert
+* Bundesland: nominalskaliert
+
+
+#### Chi-Quadrat
+```{r}
+chisq.test(daten$gesch, daten$bundl, correct=F)
+chisq.test(daten$gesch, daten$bundl, correct=F)$statistic
+```
+
+#### Cramer's V
+
+Folgende Funktion rechnet Cramers V aus zwei nominalskalierten Variablen aus: 
+```{r}
+cv.test <-  function(x,y) {
+  # Berechnet Cramers V
+  #
+  # Args: 
+  #     x = nominalskalierter Vector
+  #     y = nominalskalierter Vector
+  #
+  # Return:
+  #     Cramers V
+  #
+  # Source: 
+  #     http://www.r-bloggers.com/example-8-39-calculating-cramers-v/
+  
+    CV <- sqrt(chisq.test(x, y, correct=FALSE)$statistic /
+              (length(x) * (min(length(unique(x)),
+                                length(unique(y))) - 1)))
+    cat("Cramér V / Phi:\n")
+    return(as.numeric(CV))
+}
+```
+
+```{r}
+cv.test(daten$gesch, daten$bundl)
+table.daten <- table(daten$gesch, daten$bundl)  # Wird der Funktion 
+               #assocstats übergeben
+assocstats(table.daten)
+```
+
+
+### b)  Erstellen Sie in R auch eine Tabelle, um die Richtung des Zusammenhangs zwischen Geschlecht und Bundesland zu bestimmen.
+
+```{r}
+
+```
+
+### c)  Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Schulartzugehörigkeit und Beruf der Eltern gibt und wie er aussieht.
+
+* Schulartzugehörigkeit: rangskaliert
+* Beruf der Eltern: rangskaliert
+
+#### Spearman's Rho
+
+```{r}
+cor(daten$schulart, daten$beruf, method="spearman")
+```
+
+#### Goodmann-Kruskal (y)
+
+```{r}
+rcorr.cens(daten$schulart, daten$beruf, outx=T)[2] 
+      # Die [2] gibt den Koeffizienten zurück
+```
+
+#### Kendall's Tau
+
+```{r}
+cor(daten$schulart, daten$beruf, method="kendall")
+```
+
+Mehr über die Auswahl der Koeffizienten: https://stats.stackexchange.com/questions/18112/how-does-the-goodman-kruskal-gamma-test-and-the-kendall-tau-or-spearman-rho-test
+
+### d)  Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Leistung in Mathe und Deutsch gibt und wie er aussieht.
+
+* Leistung in Mathe: intervallskalliert (in Punkten)
+* Leistung in Deutsch: intervallskalliert (in Punkten)
+
+#### Produkt-Moment-Korrelation
+
+```{r}
+cor(daten$mathe, daten$deutsch, method="pearson")
+```
+
+
+### e) Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Geschlecht und Leistung in Deutsch gibt und wie er aussieht.
+
+* Geschlecht: nominalskaliert (dichotom)
+* Leistung in Deutsch: intervallskalliert
+
+#### Produkt-Moment-Korrelation
+
+```{r}
+cor(daten$gesch, daten$deutsch, method="pearson")
+```
+
+Dieser Koeffizient ist sollte unter Betrachtung der Kodierung der Variable *gesch* interpretiert werden. Schauen wir uns nochmal den Datensatz an:
+
+```{r}
+daten
+```
+
+Das Geschlecht wurde mit 0 und 1 kodiert. Würden wir die Kodierung umdrehen, kehrt sich der Korrelationskoeffizient um.
+
+```{r}
+daten <- cbind(daten, gesch2 = recode(daten$gesch, "0 = 1; 1 = 0"))
+daten
+```
+
+Nun führen wir die Korrelation erneut aus. Diesmal aber mit den umgedreht kodierten Daten.
+
+```{r}
+cor(daten$gesch2, daten$deutsch, method="pearson")
+```
+
+Wir sehen, dass der Koeffizient nun positiv ist. 
+
+```{r}
+tapply(daten$deutsch, daten$gesch, mean)
+```
+
+Wir können ebenso erkennen, dass die Mädchen (0) besser abgeschnitten haben als die Jungen (1). Es gibt daher einen starken Zusammenhang zwischen Geschlecht und Deutschnote in der Klasse. 
+
+
+### f) Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Bundesland und Leistung in Mathematik gibt und wie er aussieht.
+
+* Bundesland: nominalskaliert (mehr als zwei Ausprägungen)
+* Leistung in Mathematik: intervallskaliert (in Punkten)
+
+#### Eta-Quadrat
+
+```{r}
+model.daten <- aov(daten$mathe ~ daten$bundl, data = daten)
+etasq(model.daten)
+```
+
+
+### g)  Untersuchen Sie in R mit allen zutreffenden Zusammenhangsmaßen, ob es einen Zusammenhang zwischen Beruf der Eltern und Leistung in Deutsch gibt und wie er aussieht.
+
+* Beruf der Eltern: rangskaliert
+* Leistung in Deutsch: intervallskaliert
+
+#### Eta-Quadrat
+
+```{r}
+model.daten.2 <- aov(daten$deutsch ~ daten$beruf, data = daten)
+etasq(model.daten.2)
+```
+
+Wir können den Wert auch einzeln bestimmen und zusätzlich runden.
+
+```{r}
+round(etasq(model.daten.2)[[1]][1], 2)
+```
+

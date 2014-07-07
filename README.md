@@ -7,6 +7,7 @@ Die Skripte dienen der Vertiefung der Inhalte der Vorlesung. Sie können frei her
 * 03_Univariate deskriptive Statistik II: http://www.christianburkhart.de/static/tutorat/loesungen/03_Univariate_Statistik_II.html
 * 04_Standardisierung von Werten: http://www.christianburkhart.de/static/tutorat/loesungen/04_Standardisierung_von_Werten.html
 * 05_Bivariate Statistik I: http://www.christianburkhart.de/static/tutorat/loesungen/05_Bivariate_Statistik.html
+* 06_Bivariate Statistik II: http://www.christianburkhart.de/static/tutorat/loesungen/06_Bivariate_Statistik_II.html
 
 ## Zusatzsskripte zum Tutorat
 * 04_Standardisierung von Werten: http://www.christianburkhart.de/static/tutorat/zusatz/04_Standardisierung_von_Werten_Tutorat.html
