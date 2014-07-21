@@ -1,0 +1,80 @@
+Tutorat | Statistik I | 21.07.2014
+
+08 - Lineares Modell 1
+========================================================
+
+```{r}
+suppressWarnings(suppressMessages(library(scatterplot3d)))
+```
+
+Sie untersuchen, ob die Werbung im Radio und die Attraktivität von Rock Stars den Verkauf ihrer Musikalben beeinflusst. Ihnen liegen Daten vor, die in der Datei **Album Sales 2.dat** zusammengefasst sind (Diese Datei stammt von der Website des Statistikbuchautors Andy Field, siehe: http://www.statisticshell.com/html/dsur.html).
+Die Variable für die Anzahl verkaufter Alben heißt **sales**, die Variable für die Häufigkeit der Werbung im Radio heißt **airplay** und die Variable für die Attraktivität der Rock Stars heißt **attract**.
+
+
+```{r}
+setwd("C:/Users/Christian/Dropbox/Christian_HiWi/_Statistik I_Tutorat/08_Lineares Modell 1/Tutorat")
+album.sales <- read.table("Album Sales 2.dat", header=T, sep="\t")
+str(album.sales)
+head(album.sales)
+```
+
+
+### a)
+Erstellen Sie mit Hilfe von R eine multiple Regressionsgleichung mit Anzahl verkaufter Alben als Kriterium und mit der **Häufigkeit der Werbung im Radio** und **Attraktivität der Rock Stars** als Prädiktoren.
+
+```{r}
+model.sales <- lm(sales ~ airplay + attract, data=album.sales)
+summary(model.sales)
+model.sales$coefficients
+```
+
+
+### Scatterplot
+```{r fig.width=12, fig.height=10}
+scat <- scatterplot3d(album.sales$airplay, album.sales$attract, album.sales$sales, main="3D Scatterplot")
+scat$plane3d(model.sales)
+```
+
+
+### b)
+Geben Sie auch an, inwieweit beide Prädiktoren korreliert sind.
+
+```{r}
+cor(album.sales$airplay, album.sales$attract)  # Produkt-Moment-Korrelation
+```
+
+Es handelt sich um einen mittleren Zusammenhang, da r < |.3| und r > |.1|. 
+
+
+### c)
+Geben Sie für die ermittelte Regressionsgleichung auch den Determinationskoeffizienten R2 und den Standardschätzfehler SEE an.
+
+```{r}
+sum.model.sales <- summary(model.sales)
+sum.model.sales$r.squared  # R-Squared
+sum.model.sales$sigma  # Standard Error
+```
+
+
+### d)
+Erstellen Sie für beide Prädiktoren noch einmal die multiple Regressionsgleichung, indem Sie aber dieses Mal die jeweiligen z-standardiierten Werte aller drei Variablen verwenden.
+
+Zunächst wird der ganze Dataframe z-standardisiert
+```{r}
+z.album.sales <- as.data.frame(scale(album.sales))
+```
+
+Nun bilden wir das gleiche Modell aus den standardisierten Werten
+```{r}
+z.model.sales <- lm(sales ~ airplay + attract, data=z.album.sales)
+summary(z.model.sales)
+```
+
+### e)
+Sagen Sie anhand der ermittelten multiplen Regressionsgleichung, welcher Prädiktor bedeutsamer für die Anzahl verkaufter Alben ist.
+
+```{r}
+z.model.sales$coefficients
+```
+
+Airplay ist wichtiger, da der standardisierte Koeffizient größer ist als der Variable attract. 
